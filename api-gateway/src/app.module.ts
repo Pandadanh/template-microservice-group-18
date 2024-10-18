@@ -1,25 +1,24 @@
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { Module } from '@nestjs/common';
 import { join } from 'path';
+import { UserModule } from './app/client/user/user.module';
+import { SwaggerAggregatorController } from './config/swagger/swagger-aggregator.controller';
+import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from './app/auth/auth.module';
+import { JwtGuard } from './config/guard';
 
 @Module({
   imports: [
-    ClientsModule.register([
-      {
-        name: 'USERS_SERVICE',
-        transport: Transport.GRPC,
-        options: {
-          package: 'users',
-          protoPath: join(__dirname, 'protos/users.proto'),
-          url: 'localhost:50051',
-        },
-      },
-    ]),
+    UserModule, PrismaModule, AuthModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [SwaggerAggregatorController],
+  providers: [
+    {
+      provide: 'APP_GUARD',
+      useClass: JwtGuard,
+    },
+
+  ],
 })
-export class AppModule {}
+export class AppModule { }

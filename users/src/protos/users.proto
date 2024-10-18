@@ -1,27 +1,48 @@
+
+
 syntax = "proto3";
 
 package users;
-
-service UsersService {
-  rpc GetUser(GetUserRequest) returns (GetUserResponse) {}
-  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+service UserService {
+  rpc CreateUser (CreateUserRequest) returns (User);
+  rpc GetUserById (GetUserByIdRequest) returns (User);
+  rpc GetAllUsers (GetAllUsersRequest) returns (Users);
+  rpc UpdateUser (UpdateUserRequest) returns (User);
 }
 
-message GetUserRequest {
-  string email = 1;
+message User {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  string phoneNumber = 4;
+  string address = 5;
+  string createdAt = 6;
+  string updatedAt = 7;
 }
 
-message GetUserResponse {
-  string name = 1;
-  string email = 2;
+message Users {
+  repeated User users = 1;
 }
 
 message CreateUserRequest {
   string name = 1;
   string email = 2;
+  string hashedpassword = 3;
+  string phoneNumber = 4;
+  string address = 5;
 }
 
-message CreateUserResponse {
-  string name = 1;
-  string email = 2;
+message GetUserByIdRequest {
+  string id = 1;
+}
+
+message GetAllUsersRequest {}
+
+message UpdateUserRequest {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  string hashedpassword = 4;
+  string phoneNumber = 5;
+  string address = 6;
 }
