@@ -1,9 +1,11 @@
-import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as swaggerUi from 'swagger-ui-express';
 import { AppModule } from './app.module';
-import * as iceboom from 'iceboom';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import axios from 'axios';
+import { ValidationPipe } from '@nestjs/common';
+import { setupUserTestSwagger } from './swagger/swagger.config';
+
+
 
 
 async function setupSwagger() {
@@ -31,22 +33,14 @@ async function setupSwagger() {
       tryItOutEnabled: true,
     },
   });
-
-  await httpApp.listen(2000);
+  await httpApp.listen(2001);
 
 }
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await setupSwagger();
-  // try {
-  //   const { data: swaggerDocument } = await axios.get('http://localhost:3000/swagger');
-  //   app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-  //   console.log('Swagger UI available at http://localhost:3000/swagger');
-  // } catch (error) {
-  //   console.error('Failed to fetch Swagger JSON:', error);
-  // }
-
-  await app.listen(3000);
+  await setupUserTestSwagger();
+  await app.listen(3001);
 }
 bootstrap();

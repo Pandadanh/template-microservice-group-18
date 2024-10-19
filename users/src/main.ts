@@ -6,28 +6,36 @@ import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 
-
 async function setupSwagger() {
   const httpApp = await NestFactory.create(AppModule);
 
   httpApp.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
-    .setTitle('Microservice APIs')
+    .setTitle('Microservice API')
     .setDescription('The API description for the gRPC microservice')
     .setVersion('1.0')
-    .addTag('users')
-    .addBearerAuth()
-    .build();
+    .addTag('info-user')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+      'access-token',
+    ).build();
   const document = SwaggerModule.createDocument(httpApp, config);
-  SwaggerModule.setup('swagger', httpApp, document);
-  await httpApp.listen(2001);
+  SwaggerModule.setup('swagger', httpApp, document, {
+    swaggerOptions: {
+      tryItOutEnabled: true,
+    },
+  });
+  await httpApp.listen(2002);
+
 }
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    logger: ['log', 'error', 'warn', 'debug', 'verbose'], // Set desired logging levels
-  });
+  const app = await NestFactory.create(AppModule);
   await setupSwagger();
 
   app.connectMicroservice<MicroserviceOptions>({
@@ -39,6 +47,6 @@ async function bootstrap() {
     },
   });
   await app.startAllMicroservices();
-  await app.listen(3001);
+  await app.listen(3002);
 }
 bootstrap();

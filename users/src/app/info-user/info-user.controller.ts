@@ -4,7 +4,9 @@ import { GrpcMethod } from '@nestjs/microservices';
 import { InfoUserService } from './info-user.service';
 import { AuthDto } from '../dto';
 import { AuthDtoResponse } from '../reponse';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('info-user')
 @Controller('info-user')
 export class InfoUserController {
     constructor(private infoUserService: InfoUserService) { }
