@@ -31,16 +31,36 @@ export class BlogService {
 
   async findAll() {
     const blogs = await this.prismaService.post.findMany();
-    return blogs.map(blog => ({
-      id: blog.id,
-      title: blog.title,
-      content: blog.content,
-      published: blog.published,
-      userId: blog.userId,
-      createdAt: blog.createdAt.toISOString(),
-      updatedAt: blog.updatedAt.toISOString(),
-    }));
+
+    const blogsWithUser = await Promise.all(
+      blogs.map(async (blog) => {
+        const user = await this.userService.getUserById(blog.userId);
+
+        if (!user) {
+          throw new NotFoundException(`User with ID ${blog.userId} not found`);
+        }
+        return {
+          id: blog.id,
+          title: blog.title,
+          content: blog.content,
+          published: blog.published,
+          userId: blog.userId,
+          user: {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+            phoneNumber: user.phoneNumber,
+            address: user.address,
+          },
+          createdAt: blog.createdAt.toISOString(),
+          updatedAt: blog.updatedAt.toISOString(),
+        };
+      })
+    );
+
+    return blogsWithUser;
   }
+
 
 
   async findOne(id: string) {
