@@ -40,7 +40,6 @@ async function setupSwagger() {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await setupSwagger();
-  await setupUserTestSwagger();
   await app.listen(3001);
 }
 bootstrap();

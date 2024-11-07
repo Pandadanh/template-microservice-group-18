@@ -23,8 +23,7 @@ export class InfoUserController {
         return data;
     }
 
-    @GrpcMethod('UserService', 'CreateUser')
-    @Post()
+    @Post('create')
     async createUser(@Body() data: AuthDto): Promise<AuthDtoResponse> {
         try {
             return await this.infoUserService.createUser(data);
@@ -61,5 +60,11 @@ export class InfoUserController {
             console.error('Error updating user:', error);
             throw new HttpException('User update failed', HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GrpcMethod('UserService', 'PrintHello')
+    @Get('hello')
+    async printHello(): Promise<string> {
+        return 'Hello';
     }
 }

@@ -21,19 +21,6 @@ model User {
   address     String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  salaries    Salary[]
 
   @@map("user")
-}
-
-model Salary {
-  id         String   @id @default(cuid())
-  amount     Float
-  currency   String
-  salaryType String
-  userId     String
-  user       User     @relation(fields: [userId], references: [id])
-  createdAt  DateTime @default(now())
-
-  @@map("salary")
 }

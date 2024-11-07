@@ -15,7 +15,8 @@ async function setupSwagger() {
     .setTitle('Microservice API')
     .setDescription('The API description for the gRPC microservice')
     .setVersion('1.0')
-    .addTag('info-user')
+    .addTag('user-test')
+    .addTag('auth')
     .addBearerAuth(
       {
         type: 'http',
@@ -46,6 +47,9 @@ async function bootstrap() {
       url: 'localhost:50051',
     },
   });
+
+
+
   await app.startAllMicroservices();
   await app.listen(3002);
 }

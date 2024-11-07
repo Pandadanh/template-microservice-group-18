@@ -50,4 +50,9 @@ export class UserService implements OnModuleInit {
       throw new HttpException('User update failed', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  async printHello(data: String): Promise<String> {
+    console.log('printHello:', data);
+    return `Hello, ${data}`;
+  }
 }

@@ -7,6 +7,8 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 
 @Module({
+
+
   imports: [
     ClientsModule.register([
       {
@@ -20,6 +22,8 @@ import { UserController } from './user.controller';
       },
     ]),
   ],
+
+
   controllers: [UserController],
   providers: [UserService],
   exports: [ClientsModule],

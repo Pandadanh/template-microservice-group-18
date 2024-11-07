@@ -33,4 +33,6 @@ export class UserController {
   async updateUser(@Body() data: AuthDtoResponse): Promise<AuthDtoResponse> {
     return this.userService.updateUser(data);
   }
+
+
 }
